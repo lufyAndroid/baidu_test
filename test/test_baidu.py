@@ -4,14 +4,15 @@ from selenium import webdriver
 from time import sleep
 import unittest
 from selenium.webdriver.common.by import By
-from utils.config import Config,BASE_PATH,DATA_PATH
+from utils.config import Config,BASE_PATH,DATA_PATH,REPORT_PATH
 from utils.log import logger
 from utils.file_reader import ExcelReader
+from utils.HTMLTestRunner_PY3 import HTMLTestRunner
 
 
 class TestBaidu(unittest.TestCase):
     URL = Config().get('URL')
-    excel =DATA_PATH + '/data.xls'
+    excel = DATA_PATH + '/data.xls'
     driver_path = (BASE_PATH + '\drivers\chromedriver.exe')
     locator_result = (By.XPATH, '//div[contains(@class, "result")]/h3/a')
     locator_kw = (By.ID, 'kw')
@@ -25,7 +26,7 @@ class TestBaidu(unittest.TestCase):
     def sub_tearDown(self):
         self.driver.quit()
 
-    def test_search_01(self):
+    def test_search(self):
         datas = ExcelReader(self.excel).data
         for d in datas:
             with self.subTest(data=d):
@@ -49,7 +50,11 @@ class TestBaidu(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main(verbosity=2)
+    report = REPORT_PATH + '\\report.html'
+    with open(report , 'wb') as f:
+        runner = HTMLTestRunner(f, verbosity=2, title='自动化测试', description='测试报告')
+        runner.run(TestBaidu('test_search'))
+
 
 
 
