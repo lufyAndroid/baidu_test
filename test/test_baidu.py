@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 from selenium import webdriver
 from time import sleep
+import time
 import unittest
 from selenium.webdriver.common.by import By
 from utils.config import Config,BASE_PATH,DATA_PATH,REPORT_PATH
@@ -11,6 +12,7 @@ from utils.HTMLTestRunner_PY3 import HTMLTestRunner
 
 
 class TestBaidu(unittest.TestCase):
+    '''百度搜索测试'''
     URL = Config().get('URL')
     excel = DATA_PATH + '/data.xls'
     driver_path = (BASE_PATH + '\drivers\chromedriver.exe')
@@ -27,6 +29,7 @@ class TestBaidu(unittest.TestCase):
         self.driver.quit()
 
     def test_search(self):
+        '''内容搜索'''
         datas = ExcelReader(self.excel).data
         for d in datas:
             with self.subTest(data=d):
@@ -50,8 +53,9 @@ class TestBaidu(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    report = REPORT_PATH + '\\report.html'
-    with open(report , 'wb') as f:
+    time = time.strftime("%Y-%m-%d %H_%M_%S")
+    report = REPORT_PATH + "\\" + time + 'report.html'
+    with open(report, 'wb') as f:
         runner = HTMLTestRunner(f, verbosity=2, title='自动化测试', description='测试报告')
         runner.run(TestBaidu('test_search'))
 
