@@ -44,7 +44,7 @@ class Email:
             self.msg.attach(MIMEText(self.message))
 
         try:
-            smtp_server = SMTP.connect(self.server)
+            smtp_server = SMTP(self.server)
         except (gaierror and error) as e:
             logger.exception('发送邮件失败,无法连接到SMTP服务器，检查网络以及SMTP服务器. %s', e)
         else:
