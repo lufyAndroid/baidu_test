@@ -9,6 +9,7 @@ from utils.config import Config,BASE_PATH,DATA_PATH,REPORT_PATH
 from utils.log import logger
 from utils.file_reader import ExcelReader
 from utils.HTMLTestRunner_PY3 import HTMLTestRunner
+from utils.mail import Email
 
 
 class TestBaidu(unittest.TestCase):
@@ -59,6 +60,14 @@ if __name__ == '__main__':
         runner = HTMLTestRunner(f, verbosity=2, title='自动化测试', description='测试报告')
         runner.run(TestBaidu('test_search'))
 
+    e = Email(title="测试报告",
+              message="最新的报告",
+              sender='18511069163@163.com',
+              receiver='16601184986@163.com',
+              password='qwer123456',
+              server='smtp.163.com'
+              )
+    e.send()
 
 
 
